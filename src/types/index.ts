@@ -1,5 +1,5 @@
-export type Locale='fr'|'en'|'ar'
-export type Localized={fr:string;en:string;ar:string}
+export type Locale='fr'|'ar'
+export type Localized={fr:string;ar:string}
 export type ProductImage={src:string;alt:Localized}
 export type ProductVariant={id:string;label:Localized;options:{id:string;label:Localized}[]}
 export type Category={id:string;slug:string;name:Localized;image:string}
