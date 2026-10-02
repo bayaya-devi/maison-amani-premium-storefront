@@ -1,1 +1,1 @@
-export const siteConfig={name:'Maison Amani',description:'L’essentiel élégant pour votre maison.',locale:'fr_SN',currency:'XOF'} as const
+export const siteConfig={name:'Electro Rachid',description:'Électroménager, cuisine et maison sélectionnés avec exigence.',locale:'fr_MA',currency:'MAD'} as const
