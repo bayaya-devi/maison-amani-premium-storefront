@@ -7,3 +7,4 @@ export type PosSale={id:string;date:string;total:number;payment:'cash'|'card'|'t
 export type ProSav={id:string;client:string;productId:string;orderId:string;date:string;status:'received'|'processing'|'waiting'|'resolved'|'refused';description:string;notes:string[]}
 export type ProMessage={id:string;sender:'direction'|'employee';body:string;date:string;read:boolean}
 export type SalaryRecord={month:string;amount:number;paid:boolean}
+export type EmployeeTask={id:string;employeeId:string;day:string;text:string}
