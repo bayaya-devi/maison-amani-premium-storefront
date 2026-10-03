@@ -1,0 +1,9 @@
+export type EmployeePermission='orders'|'products_view'|'stock_view'|'stock_edit'|'pos'|'sav'
+export type EmployeeProfile={id:string;firstName:string;lastName:string;position:string;hours:string;permissions:EmployeePermission[]}
+export type ProOrderStatus='new'|'confirmed'|'preparing'|'ready'|'shipped'|'delivered'|'cancelled'
+export type ProOrder={id:string;assigneeId:string;client:string;phone:string;address?:string;date:string;total:number;delivery:'delivery'|'pickup';payment:'cash'|'card'|'transfer';status:ProOrderStatus;items:{productId:string;quantity:number;price:number}[];history:{status:ProOrderStatus;date:string}[]}
+export type StockMovement={id:string;productId:string;quantity:number;kind:'in'|'out'|'adjustment';reason:string;date:string;employee:string}
+export type PosSale={id:string;date:string;total:number;payment:'cash'|'card'|'transfer';items:{productId:string;quantity:number;price:number}[]}
+export type ProSav={id:string;client:string;productId:string;orderId:string;date:string;status:'received'|'processing'|'waiting'|'resolved'|'refused';description:string;notes:string[]}
+export type ProMessage={id:string;sender:'direction'|'employee';body:string;date:string;read:boolean}
+export type SalaryRecord={month:string;amount:number;paid:boolean}
