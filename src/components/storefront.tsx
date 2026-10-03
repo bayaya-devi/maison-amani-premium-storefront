@@ -13,14 +13,16 @@ const heroImages=[
 ]
 
 export function HeroCarousel(){
-  const {locale,t}=useI18n();const reduced=useReducedMotion();const [active,setActive]=useState(0)
+  const {locale,t}=useI18n();const reduced=useReducedMotion();const [active,setActive]=useState(0);const [pausedUntil,setPausedUntil]=useState(0)
   const copy=locale==='ar'
     ? [['اختيارات للمطبخ اليومي','تفاصيل عملية وأنيقة تمنح منزلك إيقاعاً أجمل.'],['مساحة منزل تشبهك','قطع مختارة بعناية للحياة اليومية.'],['أناقة تبدأ من الأساسيات','اكتشف أجهزة وأدوات تثق بها كل يوم.']]
     : [['Des choix pour le quotidien','Des pièces fiables et élégantes pour chaque geste à la maison.'],['Un intérieur qui vous ressemble','Des essentiels choisis avec exigence pour votre quotidien.'],['L’élégance commence ici','Découvrez des appareils et accessoires que vous garderez longtemps.']]
-  useEffect(()=>{if(reduced)return;const id=window.setInterval(()=>setActive(v=>(v+1)%heroImages.length),5200);return()=>window.clearInterval(id)},[reduced])
-  return <section className="hero hero-carousel" aria-label={t('hero')}>
-    <AnimatePresence mode="wait"><motion.div key={active} className="hero-slide" style={{backgroundImage:`linear-gradient(90deg,#102f29e8,#102f2970),url('${heroImages[active]}')`}} initial={reduced?false:{opacity:0,scale:1.02}} animate={{opacity:1,scale:1}} exit={reduced?{}:{opacity:0}} transition={{duration:.55}} /></AnimatePresence>
-    <div className="shell hero-content"><p className="kicker">ELECTRO RACHID · 2026</p><h1>{copy[active][0]}</h1><p>{copy[active][1]}</p><Link className="button light" to="/catalog">{t('discover')}</Link><div className="hero-dots" role="tablist">{heroImages.map((_,index)=><button key={index} aria-label={`${index+1}`} aria-selected={active===index} onClick={()=>setActive(index)} />)}</div></div>
+  useEffect(()=>{if(reduced)return;const id=window.setInterval(()=>{if(Date.now()>=pausedUntil)setActive(v=>(v+1)%heroImages.length)},5000);return()=>window.clearInterval(id)},[reduced,pausedUntil])
+  const move=(direction:1|-1)=>{setPausedUntil(Date.now()+2800);setActive(value=>(value+direction+heroImages.length)%heroImages.length)}
+  const dragEnd=(_:MouseEvent|TouchEvent|PointerEvent,info:{offset:{x:number};velocity:{x:number}})=>{const intent=Math.abs(info.offset.x)>55||Math.abs(info.velocity.x)>450;if(!intent){setPausedUntil(Date.now()+1800);return}const direction=info.offset.x<0||info.velocity.x<0?1:-1;move((locale==='ar'?-direction:direction) as 1|-1)}
+  const keyDown=(event:React.KeyboardEvent<HTMLElement>)=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();const direction=event.key==='ArrowRight'?1:-1;move((locale==='ar'?-direction:direction) as 1|-1)}}
+  return <section className="hero hero-carousel" aria-label={t('hero')} tabIndex={0} onKeyDown={keyDown}>
+    <motion.div className="hero-track" animate={{x:`-${active * (100 / heroImages.length)}%`}} transition={{type:'spring',stiffness:260,damping:32}} drag={reduced?false:'x'} dragConstraints={{left:0,right:0}} dragElastic={.12} onDragEnd={dragEnd} whileTap={{cursor:'grabbing'}}>{heroImages.map((image,index)=><div className="hero-slide" style={{backgroundImage:`linear-gradient(90deg,#102f29e8,#102f2970),url('${image}')`}} key={image}><div className="shell hero-content"><p className="kicker">ELECTRO RACHID · 2026</p><h1>{copy[index][0]}</h1><p>{copy[index][1]}</p><Link className="button light" to="/catalog">{t('discover')}</Link></div></div>)}</motion.div>
   </section>
 }
 
