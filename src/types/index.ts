@@ -15,5 +15,7 @@ export type OrderItem={productId:string;quantity:number;price:number}
 export type Order={id:string;trackingCode:string;date:string;status:OrderStatus;delivery:DeliveryMethod;payment:PaymentMethod;items:OrderItem[];total:number}
 export type Customer={firstName:string;lastName:string;email:string;phone:string;marketing:boolean}
 export type Notification={id:string;title:Localized;body:Localized;date:string;read:boolean}
+export type Rating={productId:string;value:number}
+export type SavRequest={id:string;orderId:string;productId:string;type:string;description:string;status:'open'|'processing'|'resolved';date:string}
 export type Session={customer:Customer}|null
 export type StoreSettings={name:string;phone:string;address:string;hours:string}
